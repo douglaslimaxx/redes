@@ -13,7 +13,7 @@ public class WebServer {
 				
 		String statusLine, contentTypeLine, contentDisposition="", entityBody, CRLF="\r\n";
 		
-		ServerSocket listenSocket = new ServerSocket(3010);
+		ServerSocket listenSocket = new ServerSocket(3012);
 		
 		while (true) {
 			Socket connectionSocket = listenSocket.accept();
@@ -43,7 +43,7 @@ public class WebServer {
                 	inFile.read(fileInBytes);
                 	
                 	statusLine = "HTTP/1.0 200 OK" + CRLF;
-                	contentTypeLine = "Content-Type: application/pdf, text/plain" + CRLF;
+                	contentTypeLine = "Content-Type: application/pdf" + CRLF;
                 	contentDisposition = "Content-Disposition: form-data; name='files'; filename='" + 
                 			fileName + "'" + CRLF;
                 	// Tá faltando alguma coisa aqui que não lembro
