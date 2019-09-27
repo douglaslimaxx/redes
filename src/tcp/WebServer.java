@@ -11,9 +11,9 @@ public class WebServer {
 		int MAX_BUFFER = 4096;
 		String requestMessageLine, fileName;
 				
-		String statusLine, contentTypeLine, contentDisposition="", entityBody, CRLF="\r\n";
+		String statusLine, contentTypeLine="", contentDisposition="", entityBody="", CRLF="\r\n";
 		
-		ServerSocket listenSocket = new ServerSocket(3012);
+		ServerSocket listenSocket = new ServerSocket(3017);
 		
 		while (true) {
 			Socket connectionSocket = listenSocket.accept();
@@ -43,7 +43,13 @@ public class WebServer {
                 	inFile.read(fileInBytes);
                 	
                 	statusLine = "HTTP/1.0 200 OK" + CRLF;
-                	contentTypeLine = "Content-Type: application/pdf" + CRLF;
+                	if (fileName.contains("pdf")) {
+                		contentTypeLine = "Content-Type: aplication/pdf" + CRLF;
+                	}else if (fileName.contains("txt")) {
+                		contentTypeLine = "Content-Type: text/plain" + CRLF;
+                	}else if (fileName.contains("html")) {
+                		contentTypeLine = "Content-Type: text/html" + CRLF;
+                	}                	
                 	contentDisposition = "Content-Disposition: form-data; name='files'; filename='" + 
                 			fileName + "'" + CRLF;
                 	// Tá faltando alguma coisa aqui que não lembro
@@ -61,12 +67,17 @@ public class WebServer {
 				//outToClient.writeBytes(contentDisposition);
 				outToClient.writeBytes(CRLF);
 				
-				FileInputStream fis = new FileInputStream(fileName);
-				byte[] buffer = new byte[MAX_BUFFER];
-				
-				while (fis.read(buffer) > 0) {
-					outToClient.write(buffer);
+				if (file.exists()) {
+					FileInputStream fis = new FileInputStream(fileName);
+					byte[] buffer = new byte[MAX_BUFFER];
+					
+					while (fis.read(buffer) > 0) {
+						outToClient.write(buffer);
+					}
+				} else {
+					outToClient.writeBytes(entityBody);
 				}
+				
 				/**if (file.exists()) {
 					outToClient.write(fileInBytes, 0, numOfBytes);
 				}*/
