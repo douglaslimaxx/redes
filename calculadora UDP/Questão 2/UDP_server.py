@@ -38,7 +38,7 @@ def handle_connection(sentence, client):
     b = int(b)
 
     result = str(calculate(op, a, b)).encode('utf-8')
-    print('\nResponding result: {}'.format(result))
+    print('\nResponding result: {}'.format(result.decode('utf-8')))
 
     serverSocket.sendto(result, client)
 
