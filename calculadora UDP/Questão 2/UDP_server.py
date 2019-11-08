@@ -28,7 +28,7 @@ def handle_connection(sentence, client):
 
     serverSocket.sendto(str('ACK').encode('utf-8'), client)
     
-    #time.sleep(2)
+    time.sleep(3)
 
     capitalizedSentence = sentence.decode('utf-8').upper()
     op, a, b = capitalizedSentence.split()
